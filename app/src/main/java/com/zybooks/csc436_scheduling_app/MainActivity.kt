@@ -11,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.zybooks.csc436_scheduling_app.navigation.BottomNavBar
+import com.zybooks.csc436_scheduling_app.navigation.NavGraph
 import com.zybooks.csc436_scheduling_app.ui.theme.Csc436schedulingappTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,30 +21,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+
             Csc436schedulingappTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(
+                    bottomBar = { BottomNavBar(navController) }
+                ) { innerPadding ->
+                    NavGraph(navController, innerPadding)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Csc436schedulingappTheme {
-        Greeting("Android")
     }
 }
