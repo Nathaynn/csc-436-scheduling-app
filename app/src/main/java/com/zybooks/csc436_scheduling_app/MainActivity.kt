@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
-import com.zybooks.csc436_scheduling_app.data.local.ClassDatabase
+import com.zybooks.csc436_scheduling_app.data.local.AppDatabase
 import com.zybooks.csc436_scheduling_app.data.model.DayList
 import com.zybooks.csc436_scheduling_app.data.model.SchoolClass
 import com.zybooks.csc436_scheduling_app.navigation.BottomNavBar
@@ -22,16 +22,15 @@ import com.zybooks.csc436_scheduling_app.navigation.NavGraph
 import com.zybooks.csc436_scheduling_app.ui.theme.Csc436schedulingappTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     private val db by lazy {
         Room.databaseBuilder(
-            applicationContext,
-            ClassDatabase::class.java,
-            "classes.db"
-        ).build()
+                applicationContext,
+                AppDatabase::class.java,
+                "classes.db"
+            ).fallbackToDestructiveMigration(true).build()
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -68,8 +67,8 @@ class MainActivity : ComponentActivity() {
 
     /** TEMPORARY!! Just a bunch of functions to mess with for debugging **/
     companion object DebuggingFunctions {
-        suspend fun randomDataIntoClassDatabase(db: ClassDatabase) {
-            val classesDao = db.dao
+        suspend fun randomDataIntoClassDatabase(db: AppDatabase) {
+            val classesDao = db.schoolClassDao
             val datePattern = "yyyy-MM-dd HH:mm:ss"
             val dateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
 
@@ -85,8 +84,8 @@ class MainActivity : ComponentActivity() {
             classesDao.upsertClass(schoolClass)
         }
 
-        suspend fun deleteAllClasses(db: ClassDatabase) {
-            val classesDao = db.dao
+        suspend fun deleteAllClasses(db: AppDatabase) {
+            val classesDao = db.schoolClassDao
             classesDao.deleteAllClasses()
         }
     }

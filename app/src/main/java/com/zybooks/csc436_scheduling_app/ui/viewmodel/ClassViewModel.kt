@@ -136,7 +136,6 @@ class ClassViewModel(
                     dao.deleteClass(event.schoolClass)
                 }
             }
-            // TODO(): get rid of this, only temporary
             else -> {
                 println("TRIED TO USE ${event::class.simpleName}")
             }
