@@ -21,27 +21,42 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Box
+
 @Composable
 fun QuickAddButton(
     icon: ImageVector,
     label: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    iconColor: Color,
+    outerColor: Color
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .width(100.dp)
             .clip(RoundedCornerShape(20.dp))
             .clickable { onClick() }
-            .background(Color(0xFFF7F7F7))
+            .background(Color.White)
             .padding(16.dp)
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            tint = Color(0xFF6C63FF),
-            modifier = Modifier.size(28.dp)
-        )
+        // Circle background around icon
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(48.dp)                  // size of the circle
+                .background(outerColor, CircleShape) // circle color
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = iconColor,          // icon color
+                modifier = Modifier.size(28.dp)
+            )
+        }
+
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = label,
@@ -50,3 +65,4 @@ fun QuickAddButton(
         )
     }
 }
+

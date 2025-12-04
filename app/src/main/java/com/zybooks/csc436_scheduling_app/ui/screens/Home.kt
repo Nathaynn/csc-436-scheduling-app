@@ -2,6 +2,7 @@ package com.zybooks.csc436_scheduling_app.ui.screens
 
 import android.graphics.Color.rgb
 import android.os.Build
+import android.widget.Space
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -184,24 +185,34 @@ fun Home(vm: HomeScreenViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 0.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.Center
         ) {
             QuickAddButton(
                 icon = Icons.Default.Star,
                 label = "Class",
-                onClick = { showAddClass = true }
+                onClick = { showAddClass = true },
+                iconColor = Color(rgb(38, 101, 232)),
+                outerColor = Color(rgb(216, 236, 255))
             )
+
+            Spacer(modifier = Modifier.width(20.dp))
 
             QuickAddButton(
                 icon = Icons.AutoMirrored.Filled.List,
                 label = "Task",
-                onClick = { showAddTask = true }
+                onClick = { showAddTask = true },
+                iconColor = Color(rgb(75, 174, 105)),
+                outerColor = Color(rgb(240, 253, 244))
             )
+
+            Spacer(modifier = Modifier.width(20.dp))
 
             QuickAddButton(
                 icon = Icons.Default.Notifications,
                 label = "Reminder",
-                onClick = { showAddReminder = true }
+                onClick = { showAddReminder = true },
+                iconColor = Color(rgb(149, 54, 237)),
+                outerColor = Color(rgb(251, 245, 255))
             )
         }
     }
