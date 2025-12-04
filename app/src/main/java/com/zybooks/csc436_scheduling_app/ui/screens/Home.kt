@@ -144,10 +144,10 @@ fun Home(vm: HomeScreenViewModel) {
         if (!(classes.isEmpty() && reminders.isEmpty() && assignments.isEmpty())) {
             Text(
                 text = "Upcoming",
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(start = 13.dp, top = 12.dp, bottom = 5.dp)
+                    .padding(start = 14.dp, top = 12.dp, bottom = 5.dp)
             )
 
             // Classes + Reminders Today List
@@ -166,9 +166,9 @@ fun Home(vm: HomeScreenViewModel) {
         ) {
             Text(
                 text = "Quick Add",
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 13.dp, top = 12.dp, bottom = 5.dp)
+                modifier = Modifier.padding(start = 14.dp, top = 12.dp, bottom = 5.dp)
             )
         }
 
