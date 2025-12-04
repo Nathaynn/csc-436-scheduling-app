@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
                 endDate = dateFormat.parse("2025-12-06 00:00:00"),
                 startTime = dateFormat.parse("2020-01-01 08:00:00"),
                 endTime = dateFormat.parse("2020-01-01 10:00:00"),
-                days = DayList(listOf("Monday", "Wednesday", "Friday"))
+                days = DayList(listOf("Monday", "Wednesday", "Thursday", "Friday"))
             )
             classesDao.upsertClass(schoolClass)
             return schoolClass

@@ -2,93 +2,118 @@ package com.zybooks.csc436_scheduling_app.ui.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zybooks.csc436_scheduling_app.data.model.SchoolClass
-import com.zybooks.csc436_scheduling_app.navigation.AppScreen
 import com.zybooks.csc436_scheduling_app.ui.components.ClassCard
 import com.zybooks.csc436_scheduling_app.ui.component.QuickAddButton
+import com.zybooks.csc436_scheduling_app.ui.component.StatBox
 import com.zybooks.csc436_scheduling_app.ui.viewmodel.HomeScreenViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Home(vm: HomeScreenViewModel) {
 
-    var classes by remember {
-        mutableStateOf<List<SchoolClass>>(emptyList())
-    }
+    var classes by remember { mutableStateOf<List<SchoolClass>>(emptyList()) }
 
     LaunchedEffect(Unit) {
         classes = vm.classesToday()
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    val classCount = classes.size
+    val taskCount = 4          // TODO pull real data
+    val reminderCount = 2      // TODO pull real data
 
-        // Title
-        Text(
-            AppScreen.HOME.title,
-            textAlign = TextAlign.Center,
-            fontSize = 40.sp,
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp)
+    ) {
+        Column(
+            // Header Section
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-        )
+                .background(Color(0xFFEDEBFE), shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp))
+                .padding(20.dp)
+        ) {
+            Text(
+                text = "Today",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold
+            )
 
-        // Classes list
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                StatBox("Classes", classCount)
+                StatBox("Tasks", taskCount)
+                StatBox("Reminders", reminderCount)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Classes Today List
         LazyColumn(
             modifier = Modifier
-                .weight(1f)   // ← Ensures the buttons stay at the bottom
+                .weight(1f)
                 .fillMaxWidth()
         ) {
             items(classes) { sc ->
                 ClassCard(schoolClass = sc)
             }
         }
-        // Title
-        Row {
+
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
-                "Quick Add",
+                text = "Quick Add",
                 fontSize = 20.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, top = 10.dp, bottom = 10.dp)
+                modifier = Modifier.padding(start = 4.dp, top = 10.dp, bottom = 10.dp)
             )
         }
 
-        // Quick add buttons
+        // Quick Add Buttons
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
+                .padding(horizontal = 0.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             QuickAddButton(
                 icon = Icons.Default.Star,
                 label = "Class",
-                onClick = { /* TODO: navigate to add class */ }
+                onClick = { }
             )
 
             QuickAddButton(
-                icon = Icons.Default.List,
+                icon = Icons.AutoMirrored.Filled.List,
                 label = "Task",
-                onClick = { /* TODO: navigate to add task */ }
+                onClick = { }
             )
 
             QuickAddButton(
                 icon = Icons.Default.Notifications,
                 label = "Reminder",
-                onClick = { /* TODO: navigate to add reminder */ }
+                onClick = { }
             )
         }
     }
