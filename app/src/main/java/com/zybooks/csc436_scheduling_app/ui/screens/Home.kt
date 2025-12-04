@@ -1,17 +1,24 @@
 package com.zybooks.csc436_scheduling_app.ui.screens
 
+import android.graphics.Color.rgb
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +34,8 @@ import com.zybooks.csc436_scheduling_app.ui.component.StatBox
 import com.zybooks.csc436_scheduling_app.ui.components.AssignmentCard
 import com.zybooks.csc436_scheduling_app.ui.components.ReminderCard
 import com.zybooks.csc436_scheduling_app.ui.viewmodel.HomeScreenViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -59,37 +68,84 @@ fun Home(vm: HomeScreenViewModel) {
     val taskCount = assignments.size
     val reminderCount = reminders.size
 
+    val today = LocalDate.now()
+    val formatter = DateTimeFormatter.ofPattern("MMM d',' yyyy") // e.g., "Oct 4, 2024"
+    val formattedDate = today.format(formatter)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)
     ) {
-        Column(
-            // Header Section
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFEDEBFE), shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp))
-                .padding(20.dp)
+
+        Surface(
+            shadowElevation = 2.dp,
+            shape = RoundedCornerShape(12.dp),
+            color = Color.White
         ) {
-            Text(
-                text = "Today",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+            Column(
+                // Header Section
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Color.White,
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp)
+                    )
+                    .padding(20.dp)
             ) {
-                StatBox("Classes", classCount)
-                StatBox("Tasks", taskCount)
-                StatBox("Reminders", reminderCount)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+
+                ) {
+                    Text(
+                        text = "Today",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(rgb(29, 31, 45)) // basically black
+                    )
+
+                    Text(
+                        text = formattedDate,
+                        fontSize = 16.sp,
+                        color = Color.Gray
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+
+                ) {
+                    StatBox(
+                        "Classes",
+                        classCount,
+                        Color(rgb(216, 236, 255)),
+                        Color(rgb(38, 101, 232)),
+                        Modifier.weight(1f)
+                    )
+
+                    StatBox(
+                        "Tasks",
+                        taskCount,
+                        Color(rgb(240, 253, 244)),
+                        Color(rgb(75, 174, 105)),
+                        Modifier.weight(1f)
+                    )
+                    StatBox(
+                        "Reminders",
+                        reminderCount,
+                        Color(rgb(251, 245, 255)),
+                        Color(rgb(149, 54, 237)),
+                        Modifier.weight(1f)
+                    )
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         // Classes + Reminders Today List
         LazyColumn(
@@ -176,9 +232,4 @@ fun Home(vm: HomeScreenViewModel) {
             println("REMINDER ADDED → $name on $startDate")
         }
     }
-}
-
-@Composable
-fun AssignmentCard(assignment: Assignment, schoolClass: SchoolClass?) {
-    TODO("Not yet implemented")
 }

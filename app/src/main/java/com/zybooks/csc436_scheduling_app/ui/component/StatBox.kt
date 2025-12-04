@@ -2,6 +2,7 @@ package com.zybooks.csc436_scheduling_app.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -16,23 +17,30 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun StatBox(
     title: String,
-    count: Int
+    count: Int,
+    backgroundColor: Color,
+    textColor: Color,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .background(Color(0xFFF7F7F7), RoundedCornerShape(16.dp))
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier
+            .background(backgroundColor, RoundedCornerShape(16.dp))
             .padding(vertical = 12.dp, horizontal = 20.dp)
+            .fillMaxWidth()
+
     ) {
         Text(
             text = count.toString(),
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 20.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = textColor
         )
         Text(
             text = title,
-            fontSize = 14.sp,
-            color = Color.DarkGray
+            fontSize = 12.sp,
+            color = textColor
+
         )
     }
 }
