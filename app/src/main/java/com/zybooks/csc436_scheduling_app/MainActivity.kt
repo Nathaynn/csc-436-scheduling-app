@@ -12,6 +12,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.zybooks.csc436_scheduling_app.data.local.AppDatabase
@@ -22,6 +23,8 @@ import com.zybooks.csc436_scheduling_app.data.model.SchoolClass
 import com.zybooks.csc436_scheduling_app.navigation.BottomNavBar
 import com.zybooks.csc436_scheduling_app.navigation.NavGraph
 import com.zybooks.csc436_scheduling_app.ui.theme.Csc436schedulingappTheme
+import com.zybooks.csc436_scheduling_app.ui.viewmodel.HomeScreenViewModel
+import com.zybooks.csc436_scheduling_app.ui.viewmodel.ViewModelFactory
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -42,14 +45,15 @@ class MainActivity : ComponentActivity() {
 
         /* TODO(): REMOVE FUNCTION IN FINAL PRODUCT */
         lifecycleScope.launch {
-            deleteAllClasses(db)
-            deleteAllReminders(db)
-            deleteAllAssignments(db)
+            randomDataIntoClassDatabase(db)
         }
 
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+
+            val viewModelFactory = ViewModelFactory(db.schoolClassDao)
+            val homeScreenViewModel: HomeScreenViewModel = viewModel(factory = viewModelFactory)
 
             Csc436schedulingappTheme {
                 Scaffold(
@@ -64,7 +68,7 @@ class MainActivity : ComponentActivity() {
                     },
                     bottomBar = { BottomNavBar(navController) }
                 ) { innerPadding ->
-                    NavGraph(navController, innerPadding)
+                    NavGraph(navController, innerPadding, homeScreenViewModel)
                 }
             }
         }

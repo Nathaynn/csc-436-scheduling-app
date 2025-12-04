@@ -11,9 +11,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.zybooks.csc436_scheduling_app.ui.screens.Calendar
 import com.zybooks.csc436_scheduling_app.ui.screens.Home
+import com.zybooks.csc436_scheduling_app.ui.viewmodel.HomeScreenViewModel
 
 @Composable
-fun NavGraph(navController: NavHostController, innerPadding: PaddingValues) {
+fun NavGraph(navController: NavHostController, innerPadding: PaddingValues, homeVm: HomeScreenViewModel) {
     NavHost(
         navController = navController,
         startDestination = Routes.Home,
@@ -24,7 +25,7 @@ fun NavGraph(navController: NavHostController, innerPadding: PaddingValues) {
         popExitTransition = { ExitTransition.None }
     ) {
         composable<Routes.Home> {
-            Home()
+            Home(homeVm)
         }
         composable<Routes.Calendar> {
             Calendar()
