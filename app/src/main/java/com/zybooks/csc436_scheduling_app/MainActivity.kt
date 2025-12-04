@@ -67,8 +67,8 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = {Text("CSC 436 Demo App", fontWeight = FontWeight.Bold)},
                             colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = Color(94, 97, 242),
-                                titleContentColor = Color.White
+                                containerColor = Color.White,
+                                titleContentColor = Color.Black
                             )
                         )
                     },

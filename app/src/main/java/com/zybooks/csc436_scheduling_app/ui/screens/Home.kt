@@ -7,7 +7,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Notifications
@@ -72,10 +74,13 @@ fun Home(vm: HomeScreenViewModel) {
     val formatter = DateTimeFormatter.ofPattern("MMM d',' yyyy") // e.g., "Oct 4, 2024"
     val formattedDate = today.format(formatter)
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
+            .verticalScroll(scrollState)
             .fillMaxSize()
-            .padding(20.dp)
+            .padding(20.dp),
     ) {
 
         Surface(
@@ -145,34 +150,32 @@ fun Home(vm: HomeScreenViewModel) {
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Upcoming",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(start = 13.dp, top = 12.dp, bottom = 5.dp)
+        )
 
         // Classes + Reminders Today List
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {
-            items(classes) { sc ->
-                ClassCard(schoolClass = sc)
-            }
-
-            items(reminders) { rm ->
-                ReminderCard(reminder = rm)
-            }
-
-            items(assignments.keys.toList()) { assignment ->
-                AssignmentCard(assignment = assignment, schoolClass = assignments[assignment]!!)
-            }
+        classes.forEach { sc ->
+            ClassCard(schoolClass = sc)
         }
-
+        reminders.forEach { rm ->
+            ReminderCard(reminder = rm)
+        }
+        assignments.keys.toList().forEach { assignment ->
+            AssignmentCard(assignment = assignment, schoolClass = assignments[assignment]!!)
+        }
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 text = "Quick Add",
-                fontSize = 20.sp,
-                modifier = Modifier.padding(start = 4.dp, top = 10.dp, bottom = 10.dp)
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 13.dp, top = 12.dp, bottom = 5.dp)
             )
         }
 
