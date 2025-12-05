@@ -21,10 +21,11 @@ import java.time.LocalDate
 import java.util.Date
 
 class HomeScreenViewModel(
-    private val schoolClassDao: SchoolClassDao,
-    private val reminderDao: ReminderDao,
-    private val assignmentDao: AssignmentDao
+private val schoolClassDao: SchoolClassDao,
+private val reminderDao: ReminderDao,
+private val assignmentDao: AssignmentDao
 ) : ViewModel() {
+
     fun addClass(
         name: String,
         location: String?,
@@ -49,15 +50,52 @@ class HomeScreenViewModel(
         }
     }
 
-    // Classes Today
+    fun addTask(
+        name: String,
+        dueDate: Date?,
+        dueTime: Date?,
+        classId: Int?
+    ) {
+        val assignment = Assignment(
+            title = name,
+            date = dueDate ?: Date(),
+            time = dueTime ?: Date(),
+            classId = classId ?: 0
+        )
+
+        viewModelScope.launch {
+            assignmentDao.upsertAssignment(assignment)
+        }
+    }
+
+    fun addReminder(
+        name: String,
+        location: String?,
+        date: Date?,
+        time: Date?
+    ) {
+        val reminder = Reminder(
+            title = name,
+            location = location ?: "",
+            date = date ?: Date(),
+            time = time ?: Date()
+        )
+
+        viewModelScope.launch {
+            reminderDao.upsertReminder(reminder)
+        }
+    }
+
+    // -------------------------
+    // The rest of your flows...
+    // -------------------------
+
     @RequiresApi(Build.VERSION_CODES.O)
     val classesToday: StateFlow<List<SchoolClass>> = schoolClassDao.getClasses()
         .map { classes ->
             val today = LocalDate.now()
-
             val todayFullName = today.dayOfWeek
-                .name
-                .lowercase()
+                .name.lowercase()
                 .replaceFirstChar { it.uppercaseChar() }
 
             val dayMap = mapOf(
@@ -72,7 +110,6 @@ class HomeScreenViewModel(
 
             classes.filter { schoolClass ->
                 val converted = schoolClass.days.days.map { dayMap[it] ?: it }
-
                 converted.contains(todayFullName) &&
                         schoolClass.startDate <= Date() &&
                         schoolClass.endDate >= Date()
@@ -80,7 +117,7 @@ class HomeScreenViewModel(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // Reminders Today
+
     @RequiresApi(Build.VERSION_CODES.O)
     val remindersToday: StateFlow<List<Reminder>> =
         reminderDao.getAllReminders()
@@ -94,14 +131,12 @@ class HomeScreenViewModel(
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
 
-    // Assignments Today
     @RequiresApi(Build.VERSION_CODES.O)
     val assignmentsToday: StateFlow<Map<Assignment, SchoolClass>> =
         assignmentDao.getAllAssignments()
             .map { assignments ->
                 val format = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                 val todayString = format.format(Date())
-
                 assignments.filter { assignment ->
                     format.format(assignment.date) == todayString
                 }

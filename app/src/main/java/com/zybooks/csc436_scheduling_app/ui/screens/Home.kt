@@ -222,10 +222,19 @@ fun Home(vm: HomeScreenViewModel) {
             classes = classes,
             onDismiss = { showAddTask = false }
         ) { name, _, dueDate, _, dueTime, _, _, classId ->
-            println("TASK ADDED → $name (classId=$classId) due $dueDate @ $dueTime")
+
+            vm.addTask(
+                name = name,
+                dueDate = dueDate,
+                dueTime = dueTime,
+                classId = classId?.toInt()
+            )
+
             showAddTask = false
         }
     }
+
+
 
     // REMINDER
     if (showAddReminder) {
@@ -233,8 +242,16 @@ fun Home(vm: HomeScreenViewModel) {
             title = "Add Reminder",
             onDismiss = { showAddReminder = false }
         ) { name, location, date, _, time, _, _, _ ->
-            println("REMINDER ADDED → $name at $location on $date $time")
+
+            vm.addReminder(
+                name = name,
+                location = location,
+                date = date,
+                time = time
+            )
+
             showAddReminder = false
         }
     }
+
 }
