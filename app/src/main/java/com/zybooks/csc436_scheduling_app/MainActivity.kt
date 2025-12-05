@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            title = {Text("CSC 436 Demo App", fontWeight = FontWeight.Bold)},
+                            title = {Text("ClassTrack", fontWeight = FontWeight.Bold)},
                             colors = TopAppBarDefaults.topAppBarColors(
                                 containerColor = Color.White,
                                 titleContentColor = Color.Black

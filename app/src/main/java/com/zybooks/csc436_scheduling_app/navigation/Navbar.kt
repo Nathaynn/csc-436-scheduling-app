@@ -1,6 +1,5 @@
 package com.zybooks.csc436_scheduling_app.navigation
 
-import android.graphics.Color.rgb
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -8,12 +7,14 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import kotlinx.serialization.Serializable
 
@@ -29,18 +30,22 @@ fun BottomNavBar(navController: NavController) {
 
     NavigationBar(containerColor = Color.White) {
         AppScreen.entries.forEach { item ->
-            val selected = currentRoute == item.route.javaClass.name
+            val selected = currentRoute == item.route::class.qualifiedName
             val iconColor by animateColorAsState(
-                targetValue = if (selected) Color(94, 97, 242)
-                else Color.Gray
-
+                targetValue = if (selected) Color(98, 101, 243)
+                else Color.Gray,
+                label = ""
             )
 
             NavigationBarItem(
                 selected = selected,
                 onClick = {
                     navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId)
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 icon = {
@@ -48,7 +53,10 @@ fun BottomNavBar(navController: NavController) {
                 },
                 label = {
                     Text(item.title, color = iconColor)
-                }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = Color.Transparent
+                )
             )
         }
     }
