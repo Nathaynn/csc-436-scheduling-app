@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.zybooks.csc436_scheduling_app.ui.screens.CalendarScreen
+import com.zybooks.csc436_scheduling_app.ui.screens.Calendar
 import com.zybooks.csc436_scheduling_app.ui.screens.Home
 import com.zybooks.csc436_scheduling_app.ui.viewmodel.CalendarViewModel
 import com.zybooks.csc436_scheduling_app.ui.viewmodel.HomeScreenViewModel
@@ -37,7 +37,7 @@ fun NavGraph(
             Home(homeVm)
         }
         composable<Routes.Calendar> {
-            CalendarScreen(calendarVm)
+            Calendar(calendarVm)
         }
     }
 }

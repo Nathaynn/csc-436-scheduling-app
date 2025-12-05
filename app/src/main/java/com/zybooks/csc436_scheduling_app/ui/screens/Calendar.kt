@@ -20,7 +20,7 @@ import com.zybooks.csc436_scheduling_app.ui.viewmodel.CalendarViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CalendarScreen(vm: CalendarViewModel) {
+fun Calendar(vm: CalendarViewModel) {
     val selectedDate by vm.selectedDate.collectAsStateWithLifecycle()
     val classes by vm.classesForSelectedDate.collectAsStateWithLifecycle()
     val reminders by vm.remindersForSelectedDate.collectAsStateWithLifecycle()
