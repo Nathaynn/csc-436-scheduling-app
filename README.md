@@ -29,11 +29,6 @@ This application is made possible by a variety of Android and Jetpack Compose fe
     *   **Kotlinx Serialization:** Used to enable type-safe navigation with Jetpack Compose, which is more robust than using string-based routes.
     *   **Gson:** Used to create a Room `TypeConverter` that allows `List<String>` objects to be stored in the database.
 
-## Dependencies & Requirements
-
-*   **Android SDK Version:** This app requires **Android SDK version 26 (Android 8.0 Oreo)** or higher. This is due to the use of the `java.time` API for handling dates and times, which was introduced in API level 26.
-*   **Device Features:** No specific device hardware (like a camera or GPS) is required to run the app.
-
 ## Above and Beyond
 
 Here are some areas where the project goes beyond the minimum requirements:
